@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap'); 
+
+body{
+    font-family: 'Poppins' Arial, Helvetica, sans-serif;
+}
+.imagesDivStyle{
+    width: 610px;
+    border: 1px solid gray;
+    padding: 5px;
+    margin-left: 120px;
+    margin-bottom: 20px;
+}
+.imgs{
+    height: 80px;
+    width: 100px;
+    border: 1px black dash;
+    margin: 5px;
+}
+label{
+    display: inline-block;
+    width: 120px;
+}
+input, 
+textarea,
+select{
+    width: 600px;
+    border: 1px solid gray;
+    resize: none;
+    padding: 8px;
+}
+select{
+    width: 620px;
+}
+textarea{
+    height: 100px;
+}
+.pointers{
+    border: 1px darkslateblue dash;
+}
+#pdlab{
+    height: 100px;
+    vertical-align: top;
+}
+#addproductbtn, #selimgbtn{
+    float: right;
+    margin-left: 5px;
+}
+#controldiv{
+    width: 740px;
+}
+#loadlab{
+    width: 200px;
+}
