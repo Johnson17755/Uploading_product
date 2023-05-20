@@ -80,10 +80,38 @@ const p4 = document.getElementById('p4inp');
       return "Images uploaded" + imageLInksArray.length + ' of ' + Files.length;
     }
 
+    function IsAllImagesUploaded(){
+      return imageLInksArray.length == Files.length;
+    }
+
+    function GetPoints(){
+      let points = [];
+        if(p1.value.length>0) points.push(p1.value);
+        if(p2.value.length>0) points.push(p2.value);
+        if(p3.value.length>0) points.push(p3.value);
+        if(p4.value.length>0) points.push(p4.value);
+        return points;
+    }
+
+    function RestoreBack(){
+        selBtn.disabled = false;
+        addBtn.disabled = false;
+        proglab.innerHTML= "";
+    }
+
      //   Event
     selBtn.addEventListener('click', OpenFileDialog);
 
     // UPLOAD IMAGES TO FIREBASE STORAGE 
+
+    function UploadAllImages(){
+      selBtn.disabled = true;
+      addBtn.disabled = true;
+
+      for(let i = 0; i < Files.length; i++){
+         uploadAnImage(Files[i], i);
+      }
+    }
 
     function uploadAnImage(imgToUpload, imgNO){
       const metadata = {
@@ -104,5 +132,60 @@ const p4 = document.getElementById('p4inp');
 
       (error)=>{
         alert('error: image upload failed')
+      },
+      ()=>{
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURl) => {
+            imageLInksArray.push(downloadURl);
+            if(IsAllImagesUploaded){
+              proglab.innerHTML = 'all images uploaded';
+              uploadAProduct();
+            }
+        });
       }
     }
+
+    // IMPORT + CONFIGURATION TO FIRE BASE 
+    
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+
+    const firebaseConfig = {
+      apikey: "AIzaSyCx9QHpVFevYZmehQX-EEIQyPnFVnQxoAo",
+      authDomain: "fire9db.firebaseapp.com",
+      databasedURL: "https://fire9db-default-rtdb.firebaseio.com",
+      projectId: "fire9db",
+      storageBucket:"fire9db.appspot.com",
+      massagingSenderId: "151710700224",
+      appId: "1:151710700224:web:7608a673fd665071c11325"
+    };
+
+    const app = initializeApp(firebaseConfig);
+
+    // important firebase storage functions
+    import { getStorage, ref as sRef, uploadeBytesResumable, getDownloadURL }
+    from "https://www.gstatic.com/firebasejs/9.6.6/firebase-storage.js";
+
+    // IMPORT DATABASED FUNCTION 
+
+    // FIREBASE REALTIME DATABASE 
+    import { getDatabase, ref, set, child, get }
+    from "https://www.gstatic.com/firebasejs/9.6.6/firebase-storage.js";
+      const realdb = getDatabase();
+
+
+      // UPLOAD A PRODUCT 
+    
+    function UploadProduct(){
+      set(ref(readb, "TheProductRealdb/" + getshortTitle()),{
+          ProductTitle: name.value,
+          Category: category.value,
+          Descrition: description.value,
+          Price: price.value,
+          Stock: stock.value,
+          Point: GetPoints(),
+          LinksOfImagesArray: imageLInksArray
+      });
+
+      alert("upload successful");
+      RestoreBack();
+    }
+    
